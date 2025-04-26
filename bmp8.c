@@ -164,3 +164,40 @@ void bmp8_threshold(t_bmp8 * img, int threshold) {
         }
     }
 }
+
+void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
+    if (img == NULL) {
+        printf("img is NULL\n");
+        return;
+    }
+    if (kernel == NULL) {
+        printf("kernel is NULL\n");
+        return;
+    }
+    unsigned char *img_result = malloc(img->dataSize);
+    if (img_result == NULL) {
+        perror("malloc data");
+        return;
+    }
+
+    int n = kernelSize/2;
+
+    for (int x = 1; x < img->width - 2; x++) {
+        for (int y = 1; y < img->height - 2; y++) {
+            float pixel = 0;
+            for (int kx = -n; kx <= n; kx++) {
+                for (int ky = -n; ky <= n; ky++) {
+                    int posx = x + kx;
+                    int posy = y + ky;
+                    float current = img->data[posx + posy * img->width];
+                    float coeff = kernel[kx + n][ky + n];
+                    pixel += coeff * current;
+                }
+            }
+            img_result[x + y * img->width] = (unsigned char)pixel;
+        }
+    }
+
+    free(img->data);
+    img->data = img_result;
+}
