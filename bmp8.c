@@ -9,6 +9,11 @@
 
 t_bmp8* bmp8_loadImage(const char * filename) {
     FILE *file = NULL;
+
+    if (filename == NULL) {
+        return NULL;
+    }
+
     file = fopen(filename, "rb");
     if (!file) {
         printf("Error opening file '%s': %s\n", filename, strerror(errno));
@@ -24,7 +29,7 @@ t_bmp8* bmp8_loadImage(const char * filename) {
 
     size_t ret = fread(bmp8->header, 1, HEADER_SIZE, file);
     if (ret != HEADER_SIZE) {
-        printf("Error reading header from file '%s' expected: %d, got: %d\n", filename, HEADER_SIZE, ret);
+        printf("Error reading header from file '%s' expected: %d, got: %zd\n", filename, HEADER_SIZE, ret);
     }
 
     bmp8->width = *(unsigned int *)&(bmp8->header)[18];
@@ -45,7 +50,7 @@ t_bmp8* bmp8_loadImage(const char * filename) {
 
     ret = fread(bmp8->colorTable, 1, COLOR_TABLE_SIZE, file);
     if (ret != COLOR_TABLE_SIZE) {
-        printf("Error reading colorTable from file '%s' expected: %d, got: %d\n", filename, COLOR_TABLE_SIZE, ret);
+        printf("Error reading colorTable from file '%s' expected: %d, got: %zd\n", filename, COLOR_TABLE_SIZE, ret);
     }
 
     bmp8->data = malloc(bmp8->dataSize);
@@ -58,7 +63,7 @@ t_bmp8* bmp8_loadImage(const char * filename) {
 
     ret = fread(bmp8->data, 1, bmp8->dataSize, file);
     if (ret != bmp8->dataSize) {
-        printf("Error reading colorTable from file '%s' expected: %d, got: %d\n", filename, bmp8->dataSize, ret);
+        printf("Error reading data from file '%s' expected: %d, got: %zd\n", filename, bmp8->dataSize, ret);
     }
 
     fclose(file);
@@ -66,6 +71,39 @@ t_bmp8* bmp8_loadImage(const char * filename) {
 }
 
 void bmp8_saveImage(const char * filename, t_bmp8 * img) {
+    FILE *file = NULL;
+
+    if (filename == NULL) {
+        return;
+    }
+    if (img == NULL) {
+        return;
+    }
+
+    file = fopen(filename, "wb");
+    if (!file) {
+        printf("Error opening file '%s': %s\n", filename, strerror(errno));
+        return;
+    }
+
+    printf("Saving '%s'\n", filename);
+
+    size_t ret = fwrite(img->header, 1, HEADER_SIZE, file);
+    if (ret != HEADER_SIZE) {
+        printf("Error reading header from file '%s' expected: %d, got: %zd\n", filename, HEADER_SIZE, ret);
+    }
+
+    ret = fwrite(img->colorTable, 1, COLOR_TABLE_SIZE, file);
+    if (ret != COLOR_TABLE_SIZE) {
+        printf("Error reading colorTable from file '%s' expected: %d, got: %zd\n", filename, COLOR_TABLE_SIZE, ret);
+    }
+
+    ret = fwrite(img->data, 1, img->dataSize, file);
+    if (ret != img->dataSize) {
+        printf("Error reading data from file '%s' expected: %d, got: %zd\n", filename, img->dataSize, ret);
+    }
+
+    fclose(file);
 }
 
 void bmp8_free(t_bmp8 * img) {
