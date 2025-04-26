@@ -122,3 +122,45 @@ void bmp8_printInfo(t_bmp8 * img) {
     printf("\tColor Depth:\t%d\n", img->colorDepth);
     printf("\tData Size:\t%d\n", img->dataSize);
 }
+
+
+void bmp8_negative(t_bmp8 * img) {
+    if (img == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < img->dataSize; i++) {
+        img->data[i] = 255-img->data[i];
+    }
+}
+
+
+void bmp8_brightness(t_bmp8 * img, int value) {
+    if (img == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < img->dataSize; i++) {
+        int somme = img->data[i] + value;
+        if (somme > 255) {
+            img->data[i] = 255;
+        } else if (somme < 0) {
+            img->data[i] = 0;
+        } else {
+            img->data[i] = somme;
+        }
+    }
+
+}
+
+
+void bmp8_threshold(t_bmp8 * img, int threshold) {
+    if (img == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < img->dataSize; i++) {
+        if (img->data[i] >= threshold) {
+            img->data[i] = 255;
+        } else {
+            img->data[i] = 0;
+        }
+    }
+}
