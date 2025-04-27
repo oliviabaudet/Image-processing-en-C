@@ -10,6 +10,8 @@ add_executable(Image_processing_en_C
         bmp8.h
         kernels.c
         kernels.h
+        menu.c
+        menu.h
         main.c)
 
 add_executable(test_image
