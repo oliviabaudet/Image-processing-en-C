@@ -19,6 +19,12 @@
 
 #define DEFAULT_DEPTH 0x18
 
+//Désactivation du padding des structures
+//Le compilateur optimise les accès mémoire sur des mots de 32 bits
+//Si on ne désactive pas le padding des structures le compilateur va générer du padding entre les types définis dans la structure.
+//Il faut donc désactiver le padding pour que les structures soient bien définies.
+#pragma pack(1)
+
 typedef struct {
     uint16_t type;
     uint32_t size;
@@ -82,6 +88,7 @@ void bmp24_negative (t_bmp24 * img);
 void bmp24_grayscale (t_bmp24 * img);
 void bmp24_brightness (t_bmp24 * img, int value);
 
+void bmp24_dump(t_bmp24 *img);
 
 
 #endif

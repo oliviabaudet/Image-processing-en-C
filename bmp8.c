@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <fcntl.h>
+#include <string.h>
+#include <errno.h>
 
 #include "bmp8.h"
 

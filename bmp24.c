@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 t_bmp24 * bmp24_loadImage (const char * filename) {
     FILE *file = NULL;
@@ -168,4 +169,15 @@ void bmp24_grayscale(t_bmp24 *img) {
             img->data[i][j].red = img->data[i][j].green = img->data[i][j].blue = gray;
         }
     }
+}
+
+
+void bmp24_dump(t_bmp24 *img) {
+    printf("Header type : 0x%x\n", img->header.type);
+    printf("Header size : %d\n", img->header.size);
+    printf("Header offset : %d\n", img->header.offset);
+    printf("Size : %d\n", img->header_info.size);
+    printf("info Width : %d\n", img->header_info.width);
+    printf("info Height : %d\n", img->header_info.height);
+    printf("Color depth : %d\n", img->colorDepth);
 }

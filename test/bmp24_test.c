@@ -10,6 +10,8 @@ int main(int argc, char **argv) {
         return -1;
     }
 
+    bmp24_dump(image);
+
     bmp24_saveImage(image, "../test/flowers_test.bmp");
 
     bmp24_free(image);
