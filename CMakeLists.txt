@@ -14,9 +14,16 @@ add_executable(Image_processing_en_C
         menu.h
         main.c)
 
-add_executable(test_image
+add_executable(test_image8
         test/bmp8_test.c
         kernels.c
         kernels.h
         bmp8.c
-        bmp8.h)
+        bmp8.h
+)
+
+add_executable(test_image24
+        test/bmp24_test.c
+        bmp24.c
+        bmp24.h
+)
