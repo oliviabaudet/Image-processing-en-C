@@ -183,16 +183,15 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
     }
 
     int n = kernelSize/2;
-
-    for (int x = 1; x < img->width - 2; x++) {
-        for (int y = 1; y < img->height - 2; y++) {
+    for (int y = 1; y < img->height - 2; y++) {
+        for (int x = 1; x < img->width - 2; x++) {
             float pixel = 0;
-            for (int kx = -n; kx <= n; kx++) {
-                for (int ky = -n; ky <= n; ky++) {
+            for (int ky = -n; ky <= n; ky++) {
+                int posy = y + ky;
+                for (int kx = -n; kx <= n; kx++) {
                     int posx = x + kx;
-                    int posy = y + ky;
                     float current = img->data[posx + posy * img->width];
-                    float coeff = kernel[kx + n][ky + n];
+                    float coeff = kernel[ky + n][kx + n];
                     pixel += coeff * current;
                 }
             }

@@ -21,11 +21,15 @@ int main(int argc, char **argv) {
     // bmp8_threshold(image, 128);
     // bmp8_saveImage("../test/threshold.bmp", image);
 
-    float **sharpen = sharpen_new();
-    bmp8_applyFilter(image, sharpen, 3);
+    //    float **sharpen = sharpen_new();
+    //    bmp8_applyFilter(image, sharpen, 3);
+    //    sharpen_delete(sharpen);
+
+    float **blur = blur_new();
+    bmp8_applyFilter(image, blur, 3);
+    free_kernel(blur);
     bmp8_saveImage("../test/filter.bmp", image);
 
-    sharpen_delete(sharpen);
     bmp8_free(image);
 
     return 0;
