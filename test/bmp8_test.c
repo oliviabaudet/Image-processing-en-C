@@ -25,9 +25,24 @@ int main(int argc, char **argv) {
     //    bmp8_applyFilter(image, sharpen, 3);
     //    sharpen_delete(sharpen);
 
-    float **blur = blur_new();
-    bmp8_applyFilter(image, blur, 3);
-    free_kernel(blur);
+    // float **blur = box_blur_new();
+    // bmp8_applyFilter(image, blur, 3);
+    // box_blur_delete(blur);
+
+    // float **blur = gaussian_blur_new();
+    // bmp8_applyFilter(image, blur, 3);
+    // gaussian_blur_delete(blur);
+
+    // float **outline = outline_new();
+    // bmp8_applyFilter(image, outline, 3);
+    // outline_delete(outline);
+
+    // float **emboss = emboss_new();
+    // bmp8_applyFilter(image, emboss, 3);
+    // emboss_delete(emboss);
+
+    bmp8_equalize(image);
+
     bmp8_saveImage("../test/filter.bmp", image);
 
     bmp8_free(image);

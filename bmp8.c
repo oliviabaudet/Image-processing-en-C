@@ -202,3 +202,54 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
     free(img->data);
     img->data = img_result;
 }
+
+unsigned int * bmp8_computeHistogram(t_bmp8 * img) {
+    if (img == NULL) {
+        printf("img is NULL\n");
+        return NULL;
+    }
+    unsigned int *hist = calloc(256, sizeof(unsigned int));
+    for (size_t i = 0; i < img->dataSize; i++) {
+        hist[img->data[i]]++;
+    }
+    return hist;
+}
+
+unsigned int * bmp8_computeCDF(unsigned int * hist) {
+    if (hist == NULL) {
+        printf("hist is NULL\n");
+        return NULL;
+    }
+    unsigned int cdf_min = 0;
+    for (int i = 0; i < 256; i++) {
+        if (hist[i] < cdf_min) {
+            cdf_min = hist[i];
+        }
+    }
+    unsigned int *cdf = calloc(256, sizeof(unsigned int));
+    for (int i = 0; i < 256; i++) {
+        cdf[i] = cdf[i - 1] + hist[i];
+        if (cdf[i] < cdf_min) {
+            cdf_min = cdf[i];
+        }
+    }
+    for (int i = 0; i < 256; i++) {
+        cdf[i] = cdf[i] - cdf_min;
+        cdf[i] = cdf[i] * 255 / (cdf[255] - cdf_min);
+    }
+    return cdf;
+}
+
+void bmp8_equalize(t_bmp8 * img) {
+    if (img == NULL) {
+        printf("img is NULL\n");
+        return;
+    }
+    unsigned int *hist = bmp8_computeHistogram(img);
+    unsigned int *hist_eq = bmp8_computeCDF(hist);
+    for (size_t i = 0; i < img->dataSize -1; i++) {
+        img->data[i] = hist_eq[img->data[i]];
+    }
+    free(hist);
+    free(hist_eq);
+}
