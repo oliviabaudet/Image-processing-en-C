@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     bmp24_dump(image);
 
-    //    bmp24_brightness(image, 50);
+    bmp24_brightness(image, 50);
 
     //    bmp24_boxBlur(image);
     //    bmp24_gaussianBlur(image);
@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     //    bmp24_emboss(image);
     //    bmp24_sharpen(image);
 
-    bmp24_equalize(image);
+    // bmp24_equalize(image);
 
     bmp24_saveImage(image, "../test/flowers_test.bmp");
 
