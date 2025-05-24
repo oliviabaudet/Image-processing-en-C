@@ -18,12 +18,12 @@ int main(int argc, char **argv) {
     //bmp8_saveImage("../test/negatif.bmp", image);
     //bmp8_brightness(image, 50);
     //bmp8_saveImage("../test/brightness.bmp", image);
-    // bmp8_threshold(image, 128);
+    bmp8_threshold(image, 128);
     // bmp8_saveImage("../test/threshold.bmp", image);
 
-    //    float **sharpen = sharpen_new();
-    //    bmp8_applyFilter(image, sharpen, 3);
-    //    sharpen_delete(sharpen);
+    // float **sharpen = sharpen_new();
+    // bmp8_applyFilter(image, sharpen, 3);
+    // sharpen_delete(sharpen);
 
     // float **blur = box_blur_new();
     // bmp8_applyFilter(image, blur, 3);
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     // bmp8_applyFilter(image, emboss, 3);
     // emboss_delete(emboss);
 
-    bmp8_equalize(image);
+    // bmp8_equalize(image);
 
     bmp8_saveImage("../test/filter.bmp", image);
 

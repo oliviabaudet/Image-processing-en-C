@@ -316,13 +316,9 @@ void bmp24_apply_convolution(t_bmp24 * img, float ** kernel, int kernelSize) {
             temp[i][j].blue = pixel.blue;
         }
     }
-    // Copie du résultat dans l'image originale
-    for (int i = 0; i < img->height; i++) {
-        for (int j = 0; j < img->width; j++) {
-            img->data[i][j] = temp[i][j];
-        }
-    }
-    bmp24_freeDataPixels(temp, img->height);
+    // Remplace les données actuelles par les données temporaires
+    bmp24_freeDataPixels(img->data, img->height);
+    img->data = temp;
 }
 
 void bmp24_boxBlur(t_bmp24 *img) {
@@ -412,7 +408,7 @@ void bmp24_equalize(t_bmp24 * img) {
             }
         }
     }
-    // Calculer l’histogramme cumulé et normaliser la CDF.
+    // Calcul de l’histogramme cumulé.
     double_t cdf[256] = {0};
     // Calcul histogramme Cumulé
     double cdf_min = 0;
@@ -422,7 +418,7 @@ void bmp24_equalize(t_bmp24 * img) {
             cdf_min = cdf[i];
         }
     }
-    // Normaliser la CDF
+    // Normalise la CDF
     int hist_eq[256] = {0};
     int nb_pixel = img->height * img->width;
     for (int i = 0; i < 256; i++) {
