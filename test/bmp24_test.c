@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     // bmp24_gaussianBlur(image);
     // bmp24_outline(image);
     // bmp24_emboss(image);
-    bmp24_sharpen(image);
+    // bmp24_sharpen(image);
 
     // bmp24_equalize(image);
 

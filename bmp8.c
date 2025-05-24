@@ -1,14 +1,15 @@
+//Librairies
 #include <stdio.h>
 #include <stddef.h>
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
-
-#include "bmp8.h"
-
 #include <stdlib.h>
 
+//Fichier
+#include "bmp8.h"
 
+//Chargement de l'image
 t_bmp8* bmp8_loadImage(const char * filename) {
     FILE *file = NULL;
 
@@ -34,16 +35,16 @@ t_bmp8* bmp8_loadImage(const char * filename) {
         printf("Error reading header from file '%s' expected: %d, got: %zd\n", filename, HEADER_SIZE, ret);
     }
 
-    bmp8->width = *(unsigned int *)&(bmp8->header)[18];
-    bmp8->height = *(unsigned int *)&(bmp8->header)[22];
-    bmp8->colorDepth = *(unsigned short *)&(bmp8->header)[28];
-    bmp8->dataSize = *(unsigned int *)&(bmp8->header)[34];
+    bmp8->width = *(unsigned int *)&(bmp8->header)[18]; //Largeur
+    bmp8->height = *(unsigned int *)&(bmp8->header)[22]; //Hauteur
+    bmp8->colorDepth = *(unsigned short *)&(bmp8->header)[28]; //Profondeur de couleur
+    bmp8->dataSize = *(unsigned int *)&(bmp8->header)[34]; //Taille des données
 
     if (bmp8->dataSize == 0) {
-        // If dataSize is 0 then image is not compressed
+        // Si dataSize est à 0, l'image n'est pas compressée
         unsigned int compression = *(unsigned int *)&(bmp8->header)[30];
         if (compression == 0) {
-            // Not compressed
+            //Non compressé
             bmp8->dataSize = bmp8->width * bmp8->height;
         } else {
             printf("fichier compressé et data size à 0\n");
@@ -72,6 +73,7 @@ t_bmp8* bmp8_loadImage(const char * filename) {
     return bmp8;
 }
 
+//Sauvegarde de l'image
 void bmp8_saveImage(const char * filename, t_bmp8 * img) {
     FILE *file = NULL;
 
@@ -108,24 +110,28 @@ void bmp8_saveImage(const char * filename, t_bmp8 * img) {
     fclose(file);
 }
 
+//Libère la mémoire allouée
 void bmp8_free(t_bmp8 * img) {
     free(img->data);
     free(img);
 }
 
+// Affiche les informations de l'image
 void bmp8_printInfo(t_bmp8 * img) {
     if (img == NULL) {
         printf("img is NULL\n");
         return;
     }
     printf("Image Info:\n");
-    printf("\tWidth:\t%d\n", img->width);
-    printf("\tHeight:\t%d\n", img->height);
-    printf("\tColor Depth:\t%d\n", img->colorDepth);
-    printf("\tData Size:\t%d\n", img->dataSize);
+    printf("\tWidth:\t%d\n", img->width); //Largeur
+    printf("\tHeight:\t%d\n", img->height); //Hauteur
+    printf("\tColor Depth:\t%d\n", img->colorDepth); //Profondeur de couleur
+    printf("\tData Size:\t%d\n", img->dataSize); //Taille des données
 }
 
+//Implémentation des filtres
 
+//Inverse les couleurs de l'image
 void bmp8_negative(t_bmp8 * img) {
     if (img == NULL) {
         return;
@@ -135,7 +141,7 @@ void bmp8_negative(t_bmp8 * img) {
     }
 }
 
-
+//Modifie la luminosité
 void bmp8_brightness(t_bmp8 * img, int value) {
     if (img == NULL) {
         return;
@@ -153,7 +159,7 @@ void bmp8_brightness(t_bmp8 * img, int value) {
 
 }
 
-
+//Met l'image en noir et blanc pour un certain seuil
 void bmp8_threshold(t_bmp8 * img, int threshold) {
     if (img == NULL) {
         return;
@@ -166,6 +172,7 @@ void bmp8_threshold(t_bmp8 * img, int threshold) {
         }
     }
 }
+
 
 void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
     if (img == NULL) {
