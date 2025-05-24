@@ -19,6 +19,7 @@ void bmp24_dump(t_bmp24 *img) {
     printf("info Width : %d\n", img->header_info.width);
     printf("info Height : %d\n", img->header_info.height);
     printf("Color depth : %d\n", img->colorDepth);
+    printf("Bits : %d\n", img->header_info.bits);
 }
 
 t_bmp24 * bmp24_loadImage (const char * filename) {
@@ -305,12 +306,12 @@ t_pixel bmp24_convolution (t_bmp24 * img, int x, int y, float ** kernel, int ker
 }
 
 void bmp24_apply_convolution(t_bmp24 * img, float ** kernel, int kernelSize) {
-    // Créer une copie temporaire des données
+    // Créer une nouvelle image pour stocker les pixels résultants
     t_pixel **temp = bmp24_allocateDataPixels(img->width, img->height);
 
     for (int i = 0; i < img->height; i++) {
         for (int j = 0; j < img->width; j++) {
-            t_pixel pixel = bmp24_convolution(img, i, j, kernel, kernelSize);
+            t_pixel pixel = bmp24_convolution(img, j, i, kernel, kernelSize);
             temp[i][j].red = pixel.red;
             temp[i][j].green = pixel.green;
             temp[i][j].blue = pixel.blue;
