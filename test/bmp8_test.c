@@ -12,13 +12,13 @@ int main(int argc, char **argv) {
         printf("Error loading image\n");
         return -1;
     }
-    // bmp8_printInfo(image);
+    bmp8_printInfo(image);
     // bmp8_saveImage("../test/origin.bmp", image);
     //bmp8_negative(image);
     //bmp8_saveImage("../test/negatif.bmp", image);
     //bmp8_brightness(image, 50);
     //bmp8_saveImage("../test/brightness.bmp", image);
-    bmp8_threshold(image, 128);
+    //bmp8_threshold(image, 128);
     // bmp8_saveImage("../test/threshold.bmp", image);
 
     // float **sharpen = sharpen_new();
@@ -33,15 +33,15 @@ int main(int argc, char **argv) {
     // bmp8_applyFilter(image, blur, 3);
     // gaussian_blur_delete(blur);
 
-    // float **outline = outline_new();
-    // bmp8_applyFilter(image, outline, 3);
-    // outline_delete(outline);
+    float **outline = outline_new();
+    bmp8_applyFilter(image, outline, 3);
+    outline_delete(outline);
 
     // float **emboss = emboss_new();
     // bmp8_applyFilter(image, emboss, 3);
     // emboss_delete(emboss);
 
-    // bmp8_equalize(image);
+    //bmp8_equalize(image);
 
     bmp8_saveImage("../test/filter.bmp", image);
 

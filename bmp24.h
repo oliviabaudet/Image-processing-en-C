@@ -5,20 +5,24 @@
 #include <stdint.h>
 #include <math.h>
 
-#define BITMAP_MAGIC 0x00
-#define BITMAP_SIZE 0x02
-#define BITMAP_OFFSET 0x0A
-#define BITMAP_WIDTH 0x12
-#define BITMAP_HEIGHT 0x16
-#define BITMAP_DEPTH 0x1C
-#define BITMAP_SIZE_RAW 0x22
+// Constantes pour les offsets des champs de l'en-tête BMP
+#define BITMAP_MAGIC 0x00 // offset 0
+#define BITMAP_SIZE 0x02 // offset 2
+#define BITMAP_OFFSET 0x0A // offset 10
+#define BITMAP_WIDTH 0x12 // offset 18
+#define BITMAP_HEIGHT 0x16 // offset 22
+#define BITMAP_DEPTH 0x1C // offset 28
+#define BITMAP_SIZE_RAW 0x22 // offset 34
 
-#define BMP_TYPE 0x4D42
+// Constante pour le type de fichier BMP
+#define BMP_TYPE 0x4D42 // 'BM' en hexadécimal
 
-#define HEADER_SIZE 0x0E
-#define INFO_SIZE 0x28
+// Constantes pour les tailles des champs de l'en-tête BMP
+#define HEADER_SIZE 0x0E // 14 octets
+#define INFO_SIZE 0x28 // 40 octets
 
-#define DEFAULT_DEPTH 0x18
+//Constantes pour les valeurs de profondeur de couleur
+#define DEFAULT_DEPTH 0x18 // 24
 
 //Désactivation du padding des structures
 //Le compilateur optimise les accès mémoire sur des mots de 32 bits
@@ -63,13 +67,15 @@ typedef struct {
 } t_yuv;
 
 typedef struct {
-  t_bmp_header header;
-  t_bmp_info header_info;
-  int width;
-  int height;
-  int colorDepth;
-  t_pixel **data;
+  t_bmp_header header; //En-tête de l’image
+  t_bmp_info header_info; //Informations de l’image
+  int width; //Largeur de l’image
+  int height; //Hauteur de l’image
+  int colorDepth; //Profondeur de couleur de l’image
+  t_pixel **data; //Données de l’image
 } t_bmp24;
+
+// Prototypes de fonction
 
 void bmp24_dump(t_bmp24 *img);
 
@@ -82,7 +88,27 @@ void bmp24_free (t_bmp24 * img);
 t_bmp24 * bmp24_loadImage (const char * filename);
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
+/**
+* @brief Positionne le curseur de fichier à la position position dans le fichier file,
+* puis lit n éléments de taille size dans buffer.
+* @param position La position à partir de laquelle il faut lire dans file.
+* @param buffer Le buffer pour stocker les données lues.
+* @param size La taille de chaque élément à lire.
+* @param n Le nombre d'éléments à lire.
+* @param file Le descripteur de fichier dans lequel il faut lire.
+* @return void
+*/
 void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
+/**
+* @brief Positionne le curseur de fichier à la position position dans le fichier file,
+* puis écrit n éléments de taille size depuis le buffer.
+* @param position La position à partir de laquelle il faut écrire dans file.
+* @param buffer Le buffer contenant les éléments à écrire.
+* @param size La taille de chaque élément à écrire.
+* @param n Le nombre d'éléments à écrire.
+* @param file Le descripteur de fichier dans lequel il faut écrire.
+* @return void
+*/
 void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 
 void bmp24_readPixelValue (t_bmp24 * image, int x, int y, FILE * file);

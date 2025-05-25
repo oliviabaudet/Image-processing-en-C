@@ -9,6 +9,8 @@
 //Fichier
 #include "bmp8.h"
 
+#include <tgmath.h>
+
 //Chargement de l'image
 t_bmp8* bmp8_loadImage(const char * filename) {
     FILE *file = NULL;
@@ -233,16 +235,17 @@ unsigned int * bmp8_computeCDF(unsigned int * hist) {
             cdf_min = hist[i];
         }
     }
+    int nb_pixel = 0;
     unsigned int *cdf = calloc(256, sizeof(unsigned int));
     for (int i = 0; i < 256; i++) {
+        nb_pixel += hist[i];
         cdf[i] = cdf[i - 1] + hist[i];
         if (cdf[i] < cdf_min) {
             cdf_min = cdf[i];
         }
     }
     for (int i = 0; i < 256; i++) {
-        cdf[i] = cdf[i] - cdf_min;
-        cdf[i] = cdf[i] * 255 / (cdf[255] - cdf_min);
+        cdf[i] = round(((cdf[i]-cdf_min)/(nb_pixel-cdf_min)) * 255);
     }
     return cdf;
 }

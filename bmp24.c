@@ -1,3 +1,4 @@
+//Librairies
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +8,7 @@
 #include "bmp24.h"
 #include "kernels.h"
 
+//Affichage des informations de l'image
 void bmp24_dump(t_bmp24 *img) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -22,6 +24,7 @@ void bmp24_dump(t_bmp24 *img) {
     printf("Bits : %d\n", img->header_info.bits);
 }
 
+//Chargement de l'image
 t_bmp24 * bmp24_loadImage (const char * filename) {
     FILE *file = NULL;
 
@@ -40,7 +43,6 @@ t_bmp24 * bmp24_loadImage (const char * filename) {
     file_rawRead(BITMAP_WIDTH, &width, sizeof(width), 1, file);
     file_rawRead(BITMAP_HEIGHT, &height, sizeof(height), 1, file);
     file_rawRead(BITMAP_DEPTH, &colorDepth, sizeof(colorDepth), 1, file);
-    printf("%d, %d, %d\n", width, height, colorDepth);
     t_bmp24* bmp24 = bmp24_allocate(width, height, colorDepth);
 
     file_rawRead(BITMAP_MAGIC, &(bmp24->header), sizeof(bmp24->header), 1, file);
@@ -51,6 +53,7 @@ t_bmp24 * bmp24_loadImage (const char * filename) {
     return bmp24;
 }
 
+//Sauvegarde de l'image
 void bmp24_saveImage (t_bmp24 * img, const char * filename) {
     FILE *file = NULL;
 
@@ -68,14 +71,13 @@ void bmp24_saveImage (t_bmp24 * img, const char * filename) {
         printf("Error opening file '%s': %s\n", filename, strerror(errno));
         return;
     }
-
     file_rawWrite(BITMAP_MAGIC,  &(img->header), sizeof(img->header), 1, file);
     file_rawWrite(sizeof(img->header), &(img->header_info), sizeof(img->header_info), 1, file);
     bmp24_writePixelData(img, file);
     fclose(file);
 }
 
-
+//Alloue dynamiquement de la mémoire pour une matrice
 t_pixel **bmp24_allocateDataPixels(int width, int height) {
     t_pixel **pixels = malloc(sizeof(t_pixel *) * height);
     if (!pixels) {
@@ -93,6 +95,7 @@ t_pixel **bmp24_allocateDataPixels(int width, int height) {
     return pixels;
 }
 
+//Libère toute la mémoire allouée pour la matrice
 void bmp24_freeDataPixels(t_pixel **pixels, int height) {
     if (pixels) {
         for (int i = 0; i < height; i++) {
@@ -102,6 +105,7 @@ void bmp24_freeDataPixels(t_pixel **pixels, int height) {
     }
 }
 
+//Alloue dynamiquement de la mémoire pour une image
 t_bmp24 *bmp24_allocate(int width, int height, int colorDepth) {
     t_bmp24 *img = (t_bmp24 *) malloc(sizeof(t_bmp24));
     if (!img) {
@@ -121,6 +125,7 @@ t_bmp24 *bmp24_allocate(int width, int height, int colorDepth) {
     return img;
 }
 
+//Libère toute la mémoire allouée pour l’image
 void bmp24_free(t_bmp24 *img) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -132,7 +137,8 @@ void bmp24_free(t_bmp24 *img) {
     }
 }
 
-
+//Positionne le curseur de fichier à la position dans le fichier file,
+//puis lit n éléments de taille size dans buffer.
 void file_rawRead(uint32_t position, void *buffer, uint32_t size, size_t n, FILE *file) {
     if (file == NULL) {
         printf("NULL file passed\n");
@@ -142,7 +148,8 @@ void file_rawRead(uint32_t position, void *buffer, uint32_t size, size_t n, FILE
     fread(buffer, size, n, file);
 }
 
-
+//Positionne le curseur de fichier à la position dans le fichier file,
+//puis écrit n éléments de taille size depuis le buffer.
 void file_rawWrite(uint32_t position, void *buffer, uint32_t size, size_t n, FILE *file) {
     if (file == NULL) {
         printf("NULL file passed\n");
@@ -152,7 +159,7 @@ void file_rawWrite(uint32_t position, void *buffer, uint32_t size, size_t n, FIL
     fwrite(buffer, size, n, file);
 }
 
-
+//Lit la valeur d’un pixel à une position donnée (x, y) dans le fichier file
 void bmp24_readPixelValue(t_bmp24 *img, int x, int y, FILE *file) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -168,6 +175,7 @@ void bmp24_readPixelValue(t_bmp24 *img, int x, int y, FILE *file) {
     fread(&img->data[y][x].red, 1, 1, file);
 }
 
+//Lit toutes les données de l’image dans le fichier file
 void bmp24_readPixelData(t_bmp24 *img, FILE *file) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -186,7 +194,7 @@ void bmp24_readPixelData(t_bmp24 *img, FILE *file) {
     }
 }
 
-
+//Écrit la valeur d’un pixel à une position donnée (x, y) dans le fichier file
 void bmp24_writePixelValue(t_bmp24 *img, int x, int y, FILE *file) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -202,6 +210,7 @@ void bmp24_writePixelValue(t_bmp24 *img, int x, int y, FILE *file) {
     fwrite(&img->data[y][x].red, 1, 1, file);
 }
 
+//Écrit toutes les données de l’image dans le fichier file
 void bmp24_writePixelData(t_bmp24 *img, FILE *file) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -220,6 +229,9 @@ void bmp24_writePixelData(t_bmp24 *img, FILE *file) {
     }
 }
 
+//Filtres
+
+//Inverse les couleurs de l’image
 void bmp24_negative(t_bmp24 *img) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -235,6 +247,7 @@ void bmp24_negative(t_bmp24 *img) {
     }
 }
 
+//Convertit l’image en niveaux de gris
 void bmp24_grayscale(t_bmp24 *img) {
     if (img == NULL) {
         printf("NULL image passed\n");
@@ -249,6 +262,7 @@ void bmp24_grayscale(t_bmp24 *img) {
     }
 }
 
+//Ajuste la luminosité de l’image
 void bmp24_brightness (t_bmp24 * img, int value) {
     if (img == NULL) {
         printf("NULL image passed\n");
