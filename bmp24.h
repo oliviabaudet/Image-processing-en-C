@@ -77,15 +77,54 @@ typedef struct {
 
 // Prototypes de fonction
 
+/**
+ * @brief Affiche les informations de l'image BMP
+ * @param img Pointeur vers la structure de l'image BMP
+ */
 void bmp24_dump(t_bmp24 *img);
 
+/**
+ * @brief Alloue de la mémoire pour la matrice de pixels
+ * @param width Largeur de l'image en pixels
+ * @param height Hauteur de l'image en pixels
+ * @return Pointeur vers la matrice de pixels allouée
+ */
 t_pixel ** bmp24_allocateDataPixels (int width, int height);
+
+/**
+ * @brief Libère la mémoire allouée pour la matrice de pixels
+ * @param pixels Pointeur vers la matrice de pixels à libérer
+ * @param height Hauteur de l'image en pixels
+ */
 void bmp24_freeDataPixels (t_pixel ** pixels, int height);
 
+/**
+ * @brief Alloue la mémoire pour une nouvelle structure d'image BMP
+ * @param width Largeur de l'image en pixels
+ * @param height Hauteur de l'image en pixels
+ * @param colorDepth Profondeur de couleur en bits
+ * @return Pointeur vers la structure d'image BMP allouée
+ */
 t_bmp24 * bmp24_allocate (int width, int height, int colorDepth);
+
+/**
+ * @brief Libère la mémoire allouée pour une structure d'image BMP
+ * @param img Pointeur vers la structure d'image BMP à libérer
+ */
 void bmp24_free (t_bmp24 * img);
 
+/**
+ * @brief Charge une image BMP depuis un fichier
+ * @param filename Nom du fichier à charger
+ * @return Pointeur vers la structure d'image BMP chargée
+ */
 t_bmp24 * bmp24_loadImage (const char * filename);
+
+/**
+ * @brief Sauvegarde une image BMP dans un fichier
+ * @param img Pointeur vers la structure d'image BMP à sauvegarder
+ * @param filename Nom du fichier de destination
+ */
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
 /**
@@ -111,22 +150,91 @@ void file_rawRead (uint32_t position, void * buffer, uint32_t size, size_t n, FI
 */
 void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 
+/**
+ * @brief Lit la valeur d'un pixel à une position donnée
+ * @param image Pointeur vers la structure d'image BMP
+ * @param x Coordonnée X du pixel
+ * @param y Coordonnée Y du pixel
+ * @param file Pointeur vers le fichier source
+ */
 void bmp24_readPixelValue (t_bmp24 * image, int x, int y, FILE * file);
+
+/**
+ * @brief Lit toutes les données des pixels d'une image
+ * @param image Pointeur vers la structure d'image BMP
+ * @param file Pointeur vers le fichier source
+ */
 void bmp24_readPixelData (t_bmp24 * image, FILE * file);
 
+/**
+ * @brief Écrit la valeur d'un pixel à une position donnée
+ * @param image Pointeur vers la structure d'image BMP
+ * @param x Coordonnée X du pixel
+ * @param y Coordonnée Y du pixel
+ * @param file Pointeur vers le fichier de destination
+ */
 void bmp24_writePixelValue (t_bmp24 * image, int x, int y, FILE * file);
+
+/**
+ * @brief Écrit toutes les données des pixels d'une image
+ * @param image Pointeur vers la structure d'image BMP
+ * @param file Pointeur vers le fichier de destination
+ */
 void bmp24_writePixelData (t_bmp24 * image, FILE * file);
 
+/**
+ * @brief Applique un effet négatif à l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_negative (t_bmp24 * img);
+
+/**
+ * @brief Convertit l'image en niveaux de gris
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_grayscale (t_bmp24 * img);
+
+/**
+ * @brief Ajuste la luminosité de l'image
+ * @param img Pointeur vers la structure d'image BMP
+ * @param value Valeur de l'ajustement de luminosité
+ */
 void bmp24_brightness (t_bmp24 * img, int value);
 
+/**
+ * @brief Applique un flou de type "box blur" à l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_boxBlur(t_bmp24 *img);
+
+/**
+ * @brief Applique un flou gaussien à l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_gaussianBlur(t_bmp24 *img);
+
+/**
+ * @brief Détecte les contours de l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_outline(t_bmp24 *img);
+
+/**
+ * @brief Applique un effet de relief à l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_emboss(t_bmp24 *img);
+
+/**
+ * @brief Applique un effet d'accentuation (sharpening) à l'image
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_sharpen(t_bmp24 *img);
 
+/**
+ * @brief Égalise l'histogramme de l'image pour améliorer le contraste
+ * @param img Pointeur vers la structure d'image BMP
+ */
 void bmp24_equalize(t_bmp24 * img);
 
 #endif
