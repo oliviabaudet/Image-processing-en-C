@@ -1,6 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 #include "bmp8.h"
+#include "bmp24.h"
 
 /**
  * @brief Affiche et gère le menu des filtres pour une image BMP 8 bits

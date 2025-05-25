@@ -1,7 +1,7 @@
 #pragma once
 
 //Définition des constantes
-#define HEADER_SIZE 54
+#define BMP8_HEADER_SIZE 54
 #define COLOR_TABLE_SIZE 1024
 
 /**
@@ -17,7 +17,7 @@
  */
 typedef struct {
     /** @brief En-tête du fichier BMP (54 octets) */
-    unsigned char header[HEADER_SIZE];
+    unsigned char header[BMP8_HEADER_SIZE];
     
     /** @brief Table des couleurs (256 * 4 octets = 1024 octets) */
     unsigned char colorTable[COLOR_TABLE_SIZE];
