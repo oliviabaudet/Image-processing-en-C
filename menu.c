@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "bmp8.h"
 #include "menu.h"
@@ -19,21 +20,23 @@ int menu_filtre(t_bmp8 *image) {
         printf("5. Flou gaussien\n");
         printf("6. Netteté\n");
         printf("7. Contours\n");
-        printf("8. Retourner au menu précédent\n");
+        printf("8. Egalisation d'histogramme\n");
+        printf("9. Retourner au menu précédent\n");
         int selection = -1;
         printf("Votre choix: ");
         scanf("%d", &selection);
-        while ((selection < 1) || (selection > 8)) {
-            printf("Entrez un nombre entre 1 et 8 :\n");
+        while ((selection < 1) || (selection > 9)) {
+            printf("Entrez un nombre entre 1 et 9 :\n");
             scanf("%d", &selection);
         }
 
-        switch (selection) {
-            case 1:
-                bmp8_negative(image);
-                printf("Filtre Négatif appliqué avec succès !\n");
-                break;
-            case 2: {
+        switch (selection)
+        {
+        case 1:
+            bmp8_negative(image);
+            printf("Filtre Négatif appliqué avec succès !\n");
+            break;
+        case 2: {
                 int value;
                 printf("Entrez la valeur de luminosité (-255 à 255) : ");
                 scanf("%d", &value);
@@ -44,36 +47,40 @@ int menu_filtre(t_bmp8 *image) {
                 bmp8_brightness(image, value);
                 printf("Filtre Luminosité appliqué avec succès !\n");
                 break;
-            }
-            case 3:
-                int value;
-                printf("Entrez la valeur de seuil (0 à 255) : ");
+        }
+        case 3:
+            int value;
+            printf("Entrez la valeur de seuil (0 à 255) : ");
+            scanf("%d", &value);
+            while ((value < 0) || (value > 255)) {
+                printf("Veuillez entrer une valeur entre 0 et 255 : ");
                 scanf("%d", &value);
-                while ((value < 0) || (value > 255)) {
-                    printf("Veuillez entrer une valeur entre 0 et 255 : ");
-                    scanf("%d", &value);
-                }
-                bmp8_threshold(image, value);
-                printf("Filtre Binarisation appliqué avec succès !\n");
-                break;
-            case 4:
-                // bmp8_applyFilter(image, flouKernel, taille);
-                printf("Filtre Flou (non implémenté ici).\n");
-                break;
-            case 5:
-                printf("Filtre Flou gaussien (non implémenté ici).\n");
-                break;
-            case 6:
-                printf("Filtre Netteté (non implémenté ici).\n");
-                break;
-            case 7:
-                printf("Filtre Contours (non implémenté ici).\n");
-                break;
-            case 8:
-                quitter = 1;
-                break;
-            default:
-                printf("Erreur : choix invalide.\n");
+            }
+            bmp8_threshold(image, value);
+            printf("Filtre Binarisation appliqué avec succès !\n");
+            break;
+        case 4:
+            // bmp8_applyFilter(image, flouKernel, taille);
+            printf("Filtre Flou (non implémenté ici).\n");
+            break;
+        case 5:
+            printf("Filtre Flou gaussien (non implémenté ici).\n");
+            break;
+        case 6:
+            printf("Filtre Netteté (non implémenté ici).\n");
+            break;
+        case 7:
+            printf("Filtre Contours (non implémenté ici).\n");
+            break;
+        case 8:
+            bmp8_equalize(image);
+            printf("Egalisateur d'histogramme appliqué avec succès !\n");
+            break;
+        case 9:
+            quitter = 1;
+            break;
+        default:
+            printf("Erreur : choix invalide.\n");
         }
     }
     return 0;

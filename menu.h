@@ -4,5 +4,4 @@
 
 int menu_principal(void);
 int menu_filtre(t_bmp8 *image);
-
 #endif //MENU_H
