@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "bmp8.h"
 #include "bmp24.h"
@@ -27,9 +28,9 @@ int menu_filtre_bmp8(t_bmp8 *image) {
         printf("9. Egalisation d'histogramme\n");
         printf("10. Retourner au menu précédent\n");
         int selection = -1;
-        printf("Votre choix: ");
+        printf("Votre choix: \n");
         do {
-            printf("Entrez un nombre entre 1 et 10 :\n");
+            printf("Entrez un nombre entre 1 et 10 :");
             scanf("%d", &selection);
         } while ((selection < 1) || (selection > 10));
 
@@ -155,6 +156,7 @@ int menu_filtre_bmp24(t_bmp24 *image) {
         }
         case 3:
             bmp24_grayscale(image);
+            printf("Filtre Binarisation. \n");
             break;
         case 4:
             bmp24_boxBlur(image);
@@ -194,9 +196,29 @@ int menu_bmp8() {
     char chemin[128];
     t_bmp8 *image = NULL;
     int exit = 0;
+    int choix_image = -1;
     while (image == NULL) {
-        printf("Chemin du fichier : ");
-        scanf("%s", chemin);
+        printf("Choisir une image : \n");
+        printf("1. Barbara\n");
+        printf("2. Autre\n");
+        printf("Votre choix : ");
+        scanf("%d", &choix_image);
+        while (choix_image < 1 || choix_image > 2) {
+            printf("Veuillez choisir un nombre entre 1 et 2 : \n");
+            scanf("%d", &choix_image);
+        }
+        switch (choix_image) {
+            case 1:
+                strcpy(chemin, "../images/barbara_gray.bmp");
+                break;
+            case 2:
+                printf("Chemin du fichier : ");
+                scanf("%s", chemin);
+                break;
+            default:
+                printf("Erreur : choix invalide.\n");
+                break;
+        }
         image = bmp8_loadImage(chemin);
         if (image == NULL) {
             printf("Erreur de chargement de l'image.\n");
@@ -221,8 +243,12 @@ int menu_bmp8() {
 
         switch (choix) {
             case 1:
-                printf("Chemin du fichier de sauvegarde : ");
-                scanf("%s", chemin);
+                if (choix_image == 1) {
+                    strcpy(chemin, "../test/barbara_test.bmp");
+                }else if (choix_image == 2) {
+                    printf("Chemin du fichier de sauvegarde : ");
+                    scanf("%s", chemin);
+                }
                 bmp8_saveImage(chemin, image);
                 printf("Image sauvegardée avec succès !\n");
                 break;
@@ -246,9 +272,37 @@ int menu_bmp24() {
     char chemin[128];
     t_bmp24 *image = NULL;
     int exit = 0;
+    int choix_image = -1;
     while (image == NULL) {
-        printf("Chemin du fichier : ");
-        scanf("%s", chemin);
+        printf("Choisir une image : \n");
+        printf("1. Fleurs\n");
+        printf("2. Sara et Olivia\n");
+        printf("3. Tigre\n");
+        printf("4. Autre\n");
+        printf("Votre choix : ");
+        scanf("%d", &choix_image);
+        while (choix_image < 1 || choix_image > 4) {
+            printf("Veuillez choisir un nombre entre 1 et 4 : \n");
+            scanf("%d", &choix_image);
+        }
+        switch (choix_image) {
+            case 1:
+                strcpy(chemin, "../images/flowers_color.bmp");
+                break;
+            case 2:
+                strcpy(chemin, "../images/sara_olivia.bmp");
+                break;
+            case 3:
+                strcpy(chemin, "../images/tigre.bmp");
+                break;
+            case 4:
+                printf("Chemin du fichier : ");
+                scanf("%s", chemin);
+                break;
+            default:
+                printf("Erreur : choix invalide.\n");
+                break;
+        }
         image = bmp24_loadImage(chemin);
         if (image == NULL) {
             printf("Erreur de chargement de l'image.\n");
@@ -273,8 +327,16 @@ int menu_bmp24() {
 
         switch (choix) {
             case 1:
-                printf("Chemin du fichier de sauvegarde : ");
-                scanf("%s", chemin);
+                if (choix_image == 1) {
+                    strcpy(chemin, "../test/flowers_test.bmp");
+                }else if (choix_image == 2) {
+                    strcpy(chemin, "../test/sara_olivia_test.bmp");
+                }else if (choix_image == 3) {
+                    strcpy(chemin, "../test/tigre_test.bmp");
+                }else if (choix_image == 4) {
+                    printf("Chemin du fichier de sauvegarde : ");
+                    scanf("%s", chemin);
+                }
                 bmp24_saveImage(image, chemin);
                 printf("Image sauvegardée avec succès !\n");
                 break;
@@ -326,3 +388,13 @@ int menu_principal() {
         }
     }
 }
+
+//CHEMIN TESTS
+
+//bmp8
+//../images/photo.bmp
+//../resultats/bmp8/photo_filtre.bmp
+
+//bmp24
+//../images/photo.bmp
+//../resultats/bmp24/photo_filtre.bmp

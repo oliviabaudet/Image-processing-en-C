@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
     //bmp8_equalize(image);
 
-    bmp8_saveImage("../test/filter.bmp", image);
+    bmp8_saveImage("../test/barbara.bmp", image);
 
     bmp8_free(image);
 
